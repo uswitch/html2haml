@@ -350,11 +350,12 @@ module Html2haml
                self.previous.content =~ /\A\s*\Z/ && self.previous.previous.nil?)
             nuke_outer_whitespace = true
           else
-            output << "= succeed #{self.next.content.slice!(/\A[^\s]+/).dump} do\n"
+            delimiter = self.next.content.slice!(/\A[^\s]+/)
+            output << "= succeed #{delimiter.dump} do\n"
             tabs += 1
             output << tabulate(tabs)
             #empty the text node since it was inserted into the block
-            self.next.content = ""
+            self.next.content = self.next.content.sub(delimiter, '')
           end
         end
 
